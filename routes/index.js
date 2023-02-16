@@ -8,6 +8,7 @@ const item = require("./item");
 const order = require("./order");
 const admin = require("./admin");
 const upload = require("./upload");
+const favorite = require("./favorite");
 
 //routes
 router.use("/user", user);
@@ -17,5 +18,6 @@ router.use("/item", item);
 router.use("/order", order);
 router.use("/admin", admin);
 router.use("/upload", upload);
+router.use("/favorite", favorite);
 
 module.exports = router;
