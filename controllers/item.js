@@ -136,3 +136,28 @@ module.exports.getAllItems = async (req, res) => {
     return res.status(500).json({ errors: error });
   }
 };
+
+/**
+ * @description Get Items Filter
+ * @route GET /api/item/get-items-filter
+ * @access Public
+ */
+module.exports.getFilterItems = async (req, res) => {
+  const { type, category } = req.query;
+
+  try {
+    const items = await itemModel.find({ type, category });
+    if (items.length === 0) {
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "Items not found", status: false }] });
+    }
+    //Response
+    return res.status(200).json({
+      items,
+      status: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};

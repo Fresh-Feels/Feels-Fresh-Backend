@@ -9,6 +9,8 @@ const order = require("./order");
 const admin = require("./admin");
 const upload = require("./upload");
 const favorite = require("./favorite");
+const subscription = require("./subscription");
+const assistance = require("./assistance");
 
 //routes
 router.use("/user", user);
@@ -19,5 +21,7 @@ router.use("/order", order);
 router.use("/admin", admin);
 router.use("/upload", upload);
 router.use("/favorite", favorite);
+router.use("/subscription", subscription);
+router.use("/assistance", assistance);
 
 module.exports = router;
