@@ -26,7 +26,12 @@ module.exports.addUserGoals = async (req, res) => {
           goal: [
             {
               goalType: String(data.goalType),
-              exactGoal: data.exactGoal,
+              exactGoal: [
+                {
+                  goalWeight: Number(data.goalWeight),
+                  weightChangeRate: Number(data.weightChangeRate),
+                },
+              ],
             },
           ],
         }
@@ -42,12 +47,12 @@ module.exports.addUserGoals = async (req, res) => {
           goal: [
             {
               goalType: String(data.goalType),
-              generalGoal: data.generalGoal,
+              generalGoal: String(data.generalGoal),
             },
           ],
         };
 
-  //Add goal logic
+  // //Add goal logic
   try {
     const userGoal = await userGoalModel.findOne({ user: _id });
     if (userGoal) {
