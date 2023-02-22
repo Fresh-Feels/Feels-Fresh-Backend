@@ -13,7 +13,7 @@ module.exports.addUserGoals = async (req, res) => {
 
   //Preparing Input
   let input =
-    data.goalType === "exact goal"
+    data.goalType === "Exact Goal"
       ? {
           reason: String(data.reason),
           height: Number(data.height),

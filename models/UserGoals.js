@@ -12,7 +12,7 @@ const userGoalsSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        "Lose weight",
+        "Lose Weight",
         "Gaining Muscles and losing fat",
         "Gaining Muscles and losing fat is secondary",
         "Eating healthier without losing weight",
@@ -33,45 +33,37 @@ const userGoalsSchema = new mongoose.Schema(
     gender: {
       type: String,
       required: true,
-      enum: ["male", "female", "other"],
+      enum: ["Male", "Female", "Other"],
     },
     bodyFat: {
       type: String,
       required: true,
-      enum: ["low", "medium", "high"],
+      enum: ["Low", "Medium", "High"],
     },
     active: {
       type: String,
       required: true,
       enum: [
-        "Lightly active",
-        "Moderately active",
-        "very active",
-        "extremely active",
+        "Lightly Active (0)",
+        "Moderately Active (1-3 days workout)",
+        "Very Active (4-6 days workout)",
+        "Extremely Active (6-7 days workout)",
       ],
     },
     dietType: {
       type: String,
       required: true,
-      enum: [
-        "anything",
-        "keto",
-        "vegan",
-        "mediterranean",
-        "vegetarian",
-        "paleo",
-      ],
     },
     goal: [
       {
         goalType: {
           type: String,
           required: true,
-          enum: ["general goal", "exact goal"],
+          enum: ["General Goal", "Exact Goal"],
         },
         generalGoal: {
           type: String,
-          enum: ["lose fat", "maintain weight", "build muscle"],
+          enum: ["Lose fat", "Maintain weight", "Build muscle"],
         },
         exactGoal: [
           {
