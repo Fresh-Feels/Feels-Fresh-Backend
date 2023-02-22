@@ -11,6 +11,7 @@ const upload = require("./upload");
 const favorite = require("./favorite");
 const subscription = require("./subscription");
 const assistance = require("./assistance");
+const promocode = require("./promocode");
 
 //routes
 router.use("/user", user);
@@ -23,5 +24,6 @@ router.use("/upload", upload);
 router.use("/favorite", favorite);
 router.use("/subscription", subscription);
 router.use("/assistance", assistance);
+router.use("/promocode", promocode);
 
 module.exports = router;

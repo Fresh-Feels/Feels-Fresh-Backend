@@ -7,8 +7,45 @@ const userGoalModel = require("../models/UserGoals");
  * @access Private
  */
 module.exports.addUserGoals = async (req, res) => {
-  const { ...payload } = req.body;
   const { _id } = req.user;
+  const { ...payload } = req.body;
+  let data = { ...payload };
+
+  //Preparing Input
+  let input =
+    data.goalType === "exact goal"
+      ? {
+          reason: String(data.reason),
+          height: Number(data.height),
+          weight: Number(data.weight),
+          age: Number(data.age),
+          gender: String(data.gender),
+          bodyFat: String(data.bodyFat),
+          active: String(data.active),
+          dietType: String(data.dietType),
+          goal: [
+            {
+              goalType: String(data.goalType),
+              exactGoal: data.exactGoal,
+            },
+          ],
+        }
+      : {
+          reason: String(data.reason),
+          height: Number(data.height),
+          weight: Number(data.weight),
+          age: Number(data.age),
+          gender: String(data.gender),
+          bodyFat: String(data.bodyFat),
+          active: String(data.active),
+          dietType: String(data.dietType),
+          goal: [
+            {
+              goalType: String(data.goalType),
+              generalGoal: data.generalGoal,
+            },
+          ],
+        };
 
   //Add goal logic
   try {
@@ -20,7 +57,7 @@ module.exports.addUserGoals = async (req, res) => {
     } else {
       const goal = await userGoalModel.create({
         user: _id,
-        ...payload,
+        ...input,
       });
 
       return res.status(200).json({
@@ -30,7 +67,7 @@ module.exports.addUserGoals = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log("Error", error)
+    console.log("Error", error);
     return res.status(500).json({ errors: error });
   }
 };
