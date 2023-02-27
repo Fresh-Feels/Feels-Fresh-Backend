@@ -1,5 +1,6 @@
 //Models
 const mealModel = require("../models/Meal");
+const userGoalsModel = require("../models/UserGoals");
 
 /**
  * @description Add Meal
@@ -50,8 +51,15 @@ module.exports.addMeal = async (req, res) => {
  * @access Public
  */
 module.exports.getMeals = async (req, res) => {
+  const { _id } = req.user;
   try {
-    const meals = await mealModel.find({});
+    const { targetCalories } = await userGoalsModel.findOne({
+      user: { $eq: _id },
+    });
+    const meals = await mealModel.find({
+      calories: { $lte: Number(targetCalories) },
+    });
+
     if (meals.length === 0) {
       return res
         .status(400)
@@ -63,6 +71,7 @@ module.exports.getMeals = async (req, res) => {
       status: true,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ errors: error });
   }
 };

@@ -1,6 +1,9 @@
 //Models
 const userGoalModel = require("../models/UserGoals");
 
+//Utility Functions
+const { calUserGoals } = require("../utils/Methods");
+
 /**
  * @description Add user goals
  * @route POST /api/user/add-user-goals
@@ -64,6 +67,9 @@ module.exports.addUserGoals = async (req, res) => {
         user: _id,
         ...input,
       });
+
+      //Calculate User Goals
+      calUserGoals(_id);
 
       return res.status(200).json({
         msg: "User Goal Added",

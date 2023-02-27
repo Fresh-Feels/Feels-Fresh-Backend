@@ -44,15 +44,19 @@ const userGoalsSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        "Lightly Active (0)",
-        "Moderately Active (1-3 days workout)",
-        "Very Active (4-6 days workout)",
-        "Extremely Active (6-7 days workout)",
+        "Sedentary (little or no exercise)",
+        "Lightly Active (1-3 days workout)",
+        "Moderately Active (3-5 days workout)",
+        "Active (6-7 days workout)",
+        "Very Active (6-7 days hard workout)",
       ],
     },
     dietType: {
       type: String,
       required: true,
+    },
+    targetCalories: {
+      type: Number,
     },
     goal: [
       {
