@@ -19,7 +19,7 @@ module.exports.addOrder = async (req, res) => {
 
   try {
     //Shipping Address and menu
-    const { address } = await userModel.findOne({ _id });
+    const { address, cutlery, deliveryTime } = await userModel.findOne({ _id });
     const { menu } = await menuModel.findOne({ meal: { $eq: ObjectId(meal) } });
 
     //Edge Cases
@@ -43,6 +43,8 @@ module.exports.addOrder = async (req, res) => {
     const order = await orderModel.create({
       user: _id,
       orderItems: menu,
+      cutlery,
+      deliveryTime,
       shippingAddress: address,
     });
 
@@ -91,7 +93,9 @@ module.exports.getOrder = async (req, res) => {
 
   //logic
   try {
-    const order = await orderModel.findOne({ _id: { $eq: ObjectId(id) } }).populate("user orderItems");;
+    const order = await orderModel
+      .findOne({ _id: { $eq: ObjectId(id) } })
+      .populate("user orderItems");
 
     //Edge Cases
     if (!order) {

@@ -14,9 +14,17 @@ const orderSchema = new mongoose.Schema(
         ref: "item",
       },
     ],
+    cutlery: {
+      type: Boolean,
+      default: false,
+    },
+    deliveryTime: {
+      type: String,
+      default: "Morning",
+      enum: ["Morning", "Night Before"],
+    },
     shippingAddress: {
       type: String,
-      required: true,
     },
   },
   {

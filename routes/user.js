@@ -10,6 +10,8 @@ const {
   resetPassword,
   addAddress,
   userInfo,
+  cutlery,
+  deliveryTime,
 } = require("../controllers/user");
 
 const { addUserGoals, calUserGoals } = require("../controllers/userGoals");
@@ -30,5 +32,8 @@ router.route("/address").put(verifyUser, addAddress);
 router.route("/user-info").get(verifyUser, userInfo);
 
 router.route("/add-user-goals").post(verifyUser, addUserGoals);
+
+router.route("/cutlery").put(verifyUser, cutlery);
+router.route("/delivery-time").put(verifyUser, deliveryTime);
 
 module.exports = router;

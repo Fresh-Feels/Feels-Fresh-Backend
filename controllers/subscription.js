@@ -1,9 +1,12 @@
 //Models
 const subscriptionModel = require("../models/Subscription");
 
+//Utils Functions
+const { generatePaymentToken } = require("../utils/Methods");
+
 /**
  * @description Add Subscription
- * @route POST /api/admin/add-subscription
+ * @route POST /api/subscription/add-subscription
  * @access Private
  */
 module.exports.addSubscription = async (req, res) => {
@@ -29,7 +32,14 @@ module.exports.addSubscription = async (req, res) => {
 
   //Logic
   try {
-    //Logic
+    //Find if subscription exists
+    const isExists = await subscriptionModel.findOne({ user: _id });
+    if (isExists) {
+      return res.status(400).json({
+        errors: [{ msg: "User Subscription Exists", status: false }],
+      });
+    }
+    
     const subscription = await subscriptionModel.create({
       user: _id,
       mealCount,
@@ -43,6 +53,36 @@ module.exports.addSubscription = async (req, res) => {
       subscription,
       status: true,
     });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};
+
+/**
+ * @description Payment using credit card
+ * @route POST /api/payment/credit-card
+ * @access Private
+ */
+module.exports.payment = async (req, res) => {
+  const {
+    company_code,
+    customer_id,
+    cc_number,
+    expiry_month,
+    expiry_year,
+    cvv,
+  } = req.body;
+
+  try {
+    const token = generatePaymentToken(
+      company_code,
+      customer_id,
+      cc_number,
+      expiry_month,
+      expiry_year,
+      cvv
+    );
+    console.log(token);
   } catch (error) {
     return res.status(500).json({ errors: error });
   }

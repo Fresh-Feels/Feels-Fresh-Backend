@@ -25,6 +25,15 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    cutlery: {
+      type: Boolean,
+      default: false,
+    },
+    deliveryTime: {
+      type: String,
+      default: "Morning",
+      enum: ["Morning", "Night Before"],
+    },
     verificationCode: {
       type: String,
       select: false,

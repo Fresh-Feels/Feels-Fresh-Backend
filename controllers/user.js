@@ -359,3 +359,46 @@ module.exports.userInfo = async (req, res) => {
     return res.status(500).json({ errors: error });
   }
 };
+
+/**
+ * @description Cutlery
+ * @route PUT /api/user/cutlery
+ * @access Private
+ */
+module.exports.cutlery = async (req, res) => {
+  const { value } = req.body;
+  const { _id } = req.user;
+
+  //Preparing Input
+  const input = {
+    cutlery: Boolean(value),
+  };
+
+  try {
+    await userModel.updateOne(
+      { _id },
+      { cutlery: input.cutlery },
+      { new: true }
+    );
+    res.status(200).json({ status: true });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};
+
+/**
+ * @description Delivery Time
+ * @route PUT /api/user/delivery-time
+ * @access Private
+ */
+module.exports.deliveryTime = async (req, res) => {
+  const { _id } = req.user;
+  const { time } = req.body;
+
+  try {
+    await userModel.updateOne({ _id }, { deliveryTime: time }, { new: true });
+    res.status(200).json({ status: true });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};

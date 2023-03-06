@@ -1,6 +1,9 @@
 //Models
 const userGoalModel = require("../models/UserGoals");
 
+//NPM Packages
+const axios = require("axios");
+
 //OTP
 module.exports.get6DigitCode = () => {
   Math.floor(100000 + Math.random() * 900000);
@@ -61,5 +64,37 @@ module.exports.calUserGoals = async (_id) => {
   } catch (error) {
     console.log(error);
     return error;
+  }
+};
+
+//Generate Payment Token
+module.exports.generatePaymentToken = async (
+  company_code,
+  customer_id,
+  cc_number,
+  expiry_month,
+  expiry_year,
+  cvv
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "company-code": company_code,
+    },
+  };
+  try {
+    const { data } = await axios.post(
+      {
+        customer_id,
+        cc_number,
+        expiry_month,
+        expiry_year,
+        cvv,
+      },
+      config
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
   }
 };

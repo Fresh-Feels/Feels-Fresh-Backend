@@ -57,6 +57,7 @@ const userGoalsSchema = new mongoose.Schema(
     },
     targetCalories: {
       type: Number,
+      default: 0,
     },
     goal: [
       {
