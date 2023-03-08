@@ -67,34 +67,3 @@ module.exports.calUserGoals = async (_id) => {
   }
 };
 
-//Generate Payment Token
-module.exports.generatePaymentToken = async (
-  company_code,
-  customer_id,
-  cc_number,
-  expiry_month,
-  expiry_year,
-  cvv
-) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "company-code": company_code,
-    },
-  };
-  try {
-    const { data } = await axios.post(
-      {
-        customer_id,
-        cc_number,
-        expiry_month,
-        expiry_year,
-        cvv,
-      },
-      config
-    );
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};

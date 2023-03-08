@@ -397,8 +397,122 @@ module.exports.deliveryTime = async (req, res) => {
 
   try {
     await userModel.updateOne({ _id }, { deliveryTime: time }, { new: true });
-    res.status(200).json({ status: true });
+    return res.status(200).json({ status: true });
   } catch (error) {
     return res.status(500).json({ errors: error });
+  }
+};
+
+/**
+ * @description Edit Profile
+ * @route PUT /api/user/edit-profile
+ * @access Private
+ */
+module.exports.editProfile = async (req, res) => {
+  const { username, currentPassword, newPassword } = req.body;
+  const { _id } = req.user;
+
+  //Edit Username
+  if (username && !currentPassword) {
+    try {
+      console.log(username);
+
+      await userModel.updateOne({ _id }, { username }, { new: true });
+      return res.status(200).json({ status: true });
+    } catch (error) {
+      return res.status(500).json({ errors: error });
+    }
+  }
+
+  //Edit Password
+  if (!username && currentPassword) {
+    //Edge Cases
+    if (currentPassword.length === 0) {
+      return res.status(400).json({
+        errors: [
+          { msg: "Password must be atleast 8 characters", status: false },
+        ],
+      });
+    }
+    if (newPassword.length === 0) {
+      return res.status(400).json({
+        errors: [
+          { msg: "Password must be atleast 8 characters", status: false },
+        ],
+      });
+    }
+    //Change Password Logic
+    try {
+      const user = await userModel.findOne({ _id }).select("+password");
+      if (user) {
+        const matched = await bcrypt.compare(currentPassword, user.password);
+        if (matched) {
+          //Preparing the hash password
+          const salt = await bcrypt.genSalt(10);
+          const hash = await bcrypt.hash(newPassword, salt);
+
+          await userModel.updateOne({ _id }, { password: hash });
+          return res
+            .status(200)
+            .json({ msg: "Password updated succesfully", status: true });
+        } else {
+          return res.status(400).json({
+            errors: [{ msg: "Invalid Current Password", status: false }],
+          });
+        }
+      } else {
+        return res.status(400).json({
+          errors: [{ msg: "User not found", status: false }],
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({ errors: error });
+    }
+  }
+
+  //Edit Password and Username
+  if (username && currentPassword) {
+    //Edge Cases
+    if (currentPassword.length === 0) {
+      return res.status(400).json({
+        errors: [
+          { msg: "Password must be atleast 8 characters", status: false },
+        ],
+      });
+    }
+    if (newPassword.length === 0) {
+      return res.status(400).json({
+        errors: [
+          { msg: "Password must be atleast 8 characters", status: false },
+        ],
+      });
+    }
+    //Change Password Logic
+    try {
+      const user = await userModel.findOne({ _id }).select("+password");
+      if (user) {
+        const matched = await bcrypt.compare(currentPassword, user.password);
+        if (matched) {
+          //Preparing the hash password
+          const salt = await bcrypt.genSalt(10);
+          const hash = await bcrypt.hash(newPassword, salt);
+
+          await userModel.updateOne({ _id }, { username, password: hash });
+          return res
+            .status(200)
+            .json({ msg: "Profile updated succesfully", status: true });
+        } else {
+          return res.status(400).json({
+            errors: [{ msg: "Invalid Current Password", status: false }],
+          });
+        }
+      } else {
+        return res.status(400).json({
+          errors: [{ msg: "User not found", status: false }],
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({ errors: error });
+    }
   }
 };
