@@ -33,8 +33,17 @@ module.exports.addSubscription = async (req, res) => {
     //Find if subscription exists
     const isExists = await subscriptionModel.findOne({ user: _id });
     if (isExists) {
-      return res.status(400).json({
-        errors: [{ msg: "User Subscription Exists", status: false }],
+      const subscription = await subscriptionModel.updateOne(
+        { user: _id },
+        { mealCount, days, price },
+        { new: true }
+      );
+
+      //Response
+      return res.status(200).json({
+        msg: "Thank you",
+        subscription,
+        status: true,
       });
     }
 
@@ -108,7 +117,7 @@ module.exports.payment = async (req, res) => {
         if (result.gateway_response) {
           // Redirect to gateway_response URL
           res.redirect(result.gateway_response);
-          console.log("Yes")
+          console.log("Yes");
         } else {
           res.send("Gateway response error");
         }
