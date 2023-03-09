@@ -33,11 +33,12 @@ module.exports.addSubscription = async (req, res) => {
     //Find if subscription exists
     const isExists = await subscriptionModel.findOne({ user: _id });
     if (isExists) {
-      const subscription = await subscriptionModel.updateOne(
+      const subscription = await subscriptionModel.findOneAndUpdate(
         { user: _id },
         { mealCount, days, price },
         { new: true }
       );
+      console.log(subscription);
 
       //Response
       return res.status(200).json({
@@ -113,11 +114,9 @@ module.exports.payment = async (req, res) => {
       });
       resAPI.on("end", () => {
         const result = JSON.parse(response);
-        console.log(result);
         if (result.gateway_response) {
           // Redirect to gateway_response URL
           res.redirect(result.gateway_response);
-          console.log("Yes");
         } else {
           res.send("Gateway response error");
         }
@@ -136,7 +135,7 @@ module.exports.payment = async (req, res) => {
 
 /**
  * @description Payment Success
- * @route POST /api/subscription/success
+ * @route GET /api/subscription/success
  * @access Private
  */
 module.exports.paymentSuccess = async (req, res) => {
@@ -145,7 +144,7 @@ module.exports.paymentSuccess = async (req, res) => {
 
 /**
  * @description Payment Success
- * @route POST /api/subscription/failed
+ * @route GET /api/subscription/failed
  * @access Private
  */
 module.exports.paymentFailed = async (req, res) => {

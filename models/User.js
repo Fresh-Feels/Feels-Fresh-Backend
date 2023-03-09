@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema(
       default: "Morning",
       enum: ["Morning", "Night Before"],
     },
+    profileImage: {
+      type: String,
+      default: "",
+    },
     verificationCode: {
       type: String,
       select: false,
