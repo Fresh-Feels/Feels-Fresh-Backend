@@ -404,6 +404,23 @@ module.exports.deliveryTime = async (req, res) => {
 };
 
 /**
+ * @description Add Profile Picture
+ * @route PUT /api/user/add-profile-image
+ * @access Private
+ */
+module.exports.profileImage = async (req, res) => {
+  const { _id } = req.user;
+  const { profileImage } = req.body;
+
+  try {
+    await userModel.updateOne({ _id }, { profileImage }, { new: true });
+    return res.status(200).json({ status: true });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};
+
+/**
  * @description Edit Profile
  * @route PUT /api/user/edit-profile
  * @access Private

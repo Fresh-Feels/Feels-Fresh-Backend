@@ -13,6 +13,7 @@ const {
   cutlery,
   deliveryTime,
   editProfile,
+  profileImage,
 } = require("../controllers/user");
 
 const { addUserGoals } = require("../controllers/userGoals");
@@ -29,6 +30,7 @@ router.route("/verify-user-to-resetPassword").post(verifyUserToResetPassword);
 router.route("/resend-otp").get(resendVerificationEmail);
 router.route("/reset-password").put(verifyUser, resetPassword);
 router.route("/edit-profile").put(verifyUser, editProfile);
+router.route("/add-profile-image").put(verifyUser, profileImage);
 
 router.route("/address").put(verifyUser, addAddress);
 router.route("/user-info").get(verifyUser, userInfo);
