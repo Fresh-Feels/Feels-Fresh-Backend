@@ -16,7 +16,7 @@ const {
   profileImage,
 } = require("../controllers/user");
 
-const { addUserGoals } = require("../controllers/userGoals");
+const { addUserGoals, getUserGoals } = require("../controllers/userGoals");
 
 //Middlewares
 const verifyUser = require("../middlewares/verifyUser");
@@ -36,6 +36,7 @@ router.route("/address").put(verifyUser, addAddress);
 router.route("/user-info").get(verifyUser, userInfo);
 
 router.route("/add-user-goals").post(verifyUser, addUserGoals);
+router.route("/get-user-goals").get(verifyUser, getUserGoals);
 
 router.route("/cutlery").put(verifyUser, cutlery);
 router.route("/delivery-time").put(verifyUser, deliveryTime);

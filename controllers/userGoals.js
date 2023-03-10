@@ -82,3 +82,29 @@ module.exports.addUserGoals = async (req, res) => {
     return res.status(500).json({ errors: error });
   }
 };
+
+/**
+ * @description Get user goals
+ * @route GET /api/user/get-user-goals
+ * @access Private
+ */
+module.exports.getUserGoals = async (req, res) => {
+  const { _id } = req.user;
+
+  try {
+    const userGoals = await userGoalModel.findOne({ user: _id });
+    if (!userGoals) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "User Goal not Found", status: false }] });
+    }
+
+    return res.status(200).json({
+      userGoals,
+      status: true,
+    });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ errors: error });
+  }
+};
