@@ -1,11 +1,20 @@
 //Models
 const adminModel = require("../models/Admin");
+const mealModel = require("../models/Meal");
+const itemModel = require("../models/Item");
+const assistanceModel = require("../models/Assistance");
+const promoModel = require("../models/Promocode");
 
 //Utility Functions
 const generateToken = require("../utils/generateToken");
 
 //NPM Packages
 const bcrypt = require("bcryptjs");
+
+//Helpers
+const {
+  Types: { ObjectId },
+} = require("mongoose");
 
 /**
  * @description Signup
@@ -127,6 +136,121 @@ module.exports.adminLogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ errors: error });
+  }
+};
+
+/**
+ * @description Get Meals
+ * @route GET /api/menu/get-meals
+ * @access Private
+ */
+module.exports.getMeals = async (req, res) => {
+  try {
+    const meals = await mealModel.find({});
+
+    if (meals.length === 0) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "No meals found", status: false }] });
+    }
+    //Response
+    return res.status(200).json({
+      meals,
+      status: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};
+
+/**
+ * @description Delete Meal
+ * @route DELETE /api/admin/delete-meal/:id
+ * @access Private
+ */
+module.exports.deleteMeal = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await mealModel.deleteOne({ _id: ObjectId(id) });
+
+    //Response
+    return res.status(200).json({ status: true });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};
+
+/**
+ * @description Delete Item
+ * @route DELETE /api/admin/delete-item/:id
+ * @access Private
+ */
+module.exports.deleteItem = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await itemModel.deleteOne({ _id: ObjectId(id) });
+
+    //Response
+    return res.status(200).json({ status: true });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};
+
+/**
+ * @description Get Feedbacks
+ * @route GET /api/admin/get-feedbacks
+ * @access Private
+ */
+module.exports.getFeedbacks = async (req, res) => {
+  try {
+    const feedbacks = await assistanceModel.find({}).populate("user");
+    if (feedbacks.length === 0) {
+      return res
+        .status(404)
+        .json({ errors: [{ msg: "Feedback not found", status: false }] });
+    }
+    //Response
+    return res.status(200).json({
+      feedbacks,
+      status: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};
+
+/**
+ * @description Delete Feedback
+ * @route DELETE /api/feeback/delete
+ * @access Public
+ */
+module.exports.deleteFeedback = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await assistanceModel.deleteOne({ _id: ObjectId(id) });
+    return res.status(200).json({ status: true });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};
+
+/**
+ * @description Delete Promocode
+ * @route DELETE /api/admin/delete-promo
+ * @access Private
+ */
+module.exports.deletePromocode = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await promoModel.deleteOne({ _id: ObjectId(id) });
+    return res.status(200).json({ status: true });
+  } catch (error) {
     return res.status(500).json({ errors: error });
   }
 };

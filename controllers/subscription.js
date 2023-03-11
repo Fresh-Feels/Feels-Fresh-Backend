@@ -114,6 +114,7 @@ module.exports.payment = async (req, res) => {
       });
       resAPI.on("end", () => {
         const result = JSON.parse(response);
+        console.log(result)
         if (result.gateway_response) {
           // Redirect to gateway_response URL
           res.redirect(result.gateway_response);
