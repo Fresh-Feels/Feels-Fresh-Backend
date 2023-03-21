@@ -22,7 +22,8 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://famous-pothos-e8338c.netlify.app"
+    // "https://famous-pothos-e8338c.netlify.app",
+    "http://localhost:3000"
   );
   res.setHeader(
     "Access-Control-Allow-Methods",

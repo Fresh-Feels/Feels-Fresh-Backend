@@ -13,6 +13,7 @@ const {
  */
 module.exports.addItem = async (req, res) => {
   const { ...payload } = req.body;
+
   let protein = 0;
   let carb = 0;
   let fat = 0;

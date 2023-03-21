@@ -34,20 +34,14 @@ module.exports.addMenu = async (req, res) => {
       .find({ meal: { $eq: ObjectId(meal) } })
       .populate("menu");
 
+    console.log(menuItems[0].menu);
+
     //Add total calories to meal
     menuItems[0].menu.forEach((e) => {
-      if (e.hasOwnProperty(protein)) {
-        protein += Number(e.nutrients[0].protein);
-      }
-      if (e.hasOwnProperty(carb)) {
-        carb += Number(e.nutrients[0].carb);
-      }
-      if (e.hasOwnProperty(fat)) {
-        fat += Number(e.nutrients[0].fat);
-      }
-      if (e.hasOwnProperty(fiber)) {
-        fiber += Number(e.nutrients[0].fiber);
-      }
+      protein += Number(e.nutrients[0].protein);
+      carb += Number(e.nutrients[0].carb);
+      fat += Number(e.nutrients[0].fat);
+      fiber += Number(e.nutrients[0].fiber);
     });
 
     totalCalories = protein + fiber + fat + carb;
@@ -94,20 +88,12 @@ module.exports.getMenu = async (req, res) => {
 
     //Add total calories to meal
     menu[0].menu.forEach((e) => {
-      if (e.hasOwnProperty(protein)) {
-        protein += e.nutrients[0].protein;
-      }
-      if (e.hasOwnProperty(carb)) {
-        carb += e.nutrients[0].carb;
-      }
-      if (e.hasOwnProperty(fat)) {
-        fat += e.nutrients[0].fat;
-      }
-      if (e.hasOwnProperty(fiber)) {
-        fiber += e.nutrients[0].fiber;
-      }
+      protein += e.nutrients[0].protein;
+      carb += e.nutrients[0].carb;
+      fat += e.nutrients[0].fat;
+      fiber += e.nutrients[0].fiber;
     });
-    console.log(carb);
+
     totalCalories = protein + fiber + fat + carb;
 
     //Response

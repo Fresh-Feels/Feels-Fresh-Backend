@@ -68,6 +68,7 @@ module.exports.addUserGoals = async (req, res) => {
         ...input,
       });
 
+      console.log(_id);
       //Calculate User Goals
       calUserGoals(_id);
 
@@ -104,7 +105,7 @@ module.exports.getUserGoals = async (req, res) => {
       status: true,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({ errors: error });
   }
 };
