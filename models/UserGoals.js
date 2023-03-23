@@ -74,11 +74,9 @@ const userGoalsSchema = new mongoose.Schema(
           {
             goalWeight: {
               type: Number,
-              required: true,
             },
             weightChangeRate: {
               type: Number,
-              required: true,
             },
           },
         ],

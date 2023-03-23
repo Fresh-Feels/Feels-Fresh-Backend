@@ -14,6 +14,8 @@ module.exports.addUserGoals = async (req, res) => {
   const { ...payload } = req.body;
   let data = { ...payload };
 
+  console.log(data);
+
   //Preparing Input
   let input =
     data.goalType === "Exact Goal"
@@ -68,7 +70,6 @@ module.exports.addUserGoals = async (req, res) => {
         ...input,
       });
 
-      console.log(_id);
       //Calculate User Goals
       calUserGoals(_id);
 

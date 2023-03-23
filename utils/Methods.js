@@ -58,8 +58,6 @@ module.exports.calUserGoals = async (_id) => {
       }
     }
 
-    console.log(AMR);
-
     //User Target Calories
     userGoals.targetCalories = Number(AMR.toFixed(1));
     await userGoals.save();

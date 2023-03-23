@@ -12,6 +12,7 @@ const favorite = require("./favorite");
 const subscription = require("./subscription");
 const assistance = require("./assistance");
 const promocode = require("./promocode");
+const package = require("./package");
 
 //routes
 router.use("/user", user);
@@ -25,5 +26,6 @@ router.use("/favorite", favorite);
 router.use("/subscription", subscription);
 router.use("/assistance", assistance);
 router.use("/promocode", promocode);
+router.use("/package", package);
 
 module.exports = router;
