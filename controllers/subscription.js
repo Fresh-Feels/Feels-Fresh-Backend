@@ -38,7 +38,6 @@ module.exports.addSubscription = async (req, res) => {
         { mealCount, days, price },
         { new: true }
       );
-      console.log(subscription);
 
       //Response
       return res.status(200).json({

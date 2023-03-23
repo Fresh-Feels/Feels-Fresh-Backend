@@ -34,8 +34,6 @@ module.exports.addMenu = async (req, res) => {
       .find({ meal: { $eq: ObjectId(meal) } })
       .populate("menu");
 
-    console.log(menuItems[0].menu);
-
     //Add total calories to meal
     menuItems[0].menu.forEach((e) => {
       protein += Number(e.nutrients[0].protein);

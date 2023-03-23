@@ -2,6 +2,7 @@
 const orderModel = require("../models/Order");
 const userModel = require("../models/User");
 const menuModel = require("../models/Menu");
+const subscriptionModel = require("../models/Subscription");
 
 //Helpers
 const {
@@ -17,11 +18,13 @@ module.exports.addOrder = async (req, res) => {
   const { _id } = req.user;
   const { meal } = req.params;
 
-  
   try {
     //Shipping Address and menu
     const { address, cutlery, deliveryTime } = await userModel.findOne({ _id });
     const { menu } = await menuModel.findOne({ meal: { $eq: ObjectId(meal) } });
+    const { mealCount } = await subscriptionModel.findOne({
+      user: { $eq: _id },
+    });
 
     //Edge Cases
     if (address === "") {
@@ -38,6 +41,13 @@ module.exports.addOrder = async (req, res) => {
       return res
         .status(404)
         .json({ errors: [{ msg: "No menu to order", status: false }] });
+    }
+
+    const userOrders = await orderModel.find({ user: _id });
+    if (userOrders.length >= mealCount) {
+      return res
+        .status(401)
+        .json({ status: false, msg: "Upgrade your package" });
     }
 
     //Logic

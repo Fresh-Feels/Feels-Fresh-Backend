@@ -1,7 +1,7 @@
 //Models
 const mealModel = require("../models/Meal");
 const userGoalsModel = require("../models/UserGoals");
-const subscriptionModel = require("../models/Subscription");
+
 /**
  * @description Add Meal
  * @route POST /api/meal/add-meal
@@ -56,14 +56,10 @@ module.exports.getMeals = async (req, res) => {
     const { targetCalories } = await userGoalsModel.findOne({
       user: { $eq: _id },
     });
-    const { mealCount } = await subscriptionModel.findOne({
-      user: { $eq: _id },
+
+    const meals = await mealModel.find({
+      calories: { $lte: Number(targetCalories) },
     });
-    const meals = await mealModel
-      .find({
-        calories: { $lte: Number(targetCalories) },
-      })
-      .limit(mealCount);
 
     if (meals.length === 0) {
       return res
