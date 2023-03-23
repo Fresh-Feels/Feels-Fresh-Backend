@@ -1,6 +1,7 @@
 //Models
 const menuModel = require("../models/Menu");
 const mealModel = require("../models/Meal");
+const orderModel = require("../models/Order");
 
 //Helpers
 const {
@@ -67,13 +68,22 @@ module.exports.addMenu = async (req, res) => {
  */
 module.exports.getMenu = async (req, res) => {
   const { id } = req.params;
+  const { _id } = req.user;
   let protein = 0;
   let fat = 0;
   let fiber = 0;
   let carb = 0;
   let totalCalories = 0;
+  let isOrdered = false;
 
   try {
+    //Check if the meal is ordered
+    const orders = await orderModel.find({
+      $and: [{ meal: ObjectId(id) }, { user: _id }],
+    });
+    if (orders.length > 0) isOrdered = true;
+
+    //Get Menu
     const menu = await menuModel
       .find({ meal: { $eq: ObjectId(id) } })
       .populate("meal menu");
@@ -99,6 +109,7 @@ module.exports.getMenu = async (req, res) => {
       menu,
       totalCalories,
       nutrients: [{ protein, fat, fiber, carb }],
+      isOrdered,
       status: true,
     });
   } catch (error) {

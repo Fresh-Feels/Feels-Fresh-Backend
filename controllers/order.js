@@ -47,12 +47,13 @@ module.exports.addOrder = async (req, res) => {
     if (userOrders.length >= mealCount) {
       return res
         .status(401)
-        .json({ status: false, msg: "Upgrade your package" });
+        .json({ status: false, msg: "Upgrade Your Package" });
     }
 
     //Logic
     const order = await orderModel.create({
       user: _id,
+      meal,
       orderItems: menu,
       cutlery,
       deliveryTime,
@@ -61,7 +62,7 @@ module.exports.addOrder = async (req, res) => {
 
     //Response
     return res.status(200).json({
-      msg: "Thank you",
+      msg: "Order added Successfully",
       order,
       status: true,
     });
