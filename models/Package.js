@@ -2,17 +2,22 @@ const mongoose = require("mongoose");
 
 const packageSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
+    mealCount: {
+      type: Number,
       required: true,
-      default: "",
+      default: 0,
     },
     days: {
-      type: String,
+      type: Number,
       required: true,
-      default: "",
+      default: 0,
     },
     price: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    subscription: {
       type: String,
       required: true,
       default: "",

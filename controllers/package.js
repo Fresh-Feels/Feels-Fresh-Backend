@@ -12,13 +12,38 @@ const {
  * @access Private
  */
 module.exports.addPackage = async (req, res) => {
-  const { name, days, price } = req.body;
+  const { mealCount, days, price, subscription } = req.body;
+  let packageDays = 0;
+
+  if (subscription === "Monthly") {
+    packageDays = 30;
+  } else {
+    packageDays = days;
+  }
+
+  //Edge Cases
+  if (mealCount <= 0) {
+    return res.status(400).json({
+      errors: [{ msg: "Meal Count is Required", status: false }],
+    });
+  }
+  if (days <= 0) {
+    return res.status(400).json({
+      errors: [{ msg: "Subscription days are Required", status: false }],
+    });
+  }
+  if (price <= 0) {
+    return res.status(400).json({
+      errors: [{ msg: "Subscription Price is Required", status: false }],
+    });
+  }
 
   try {
     const package = await packageModel.create({
-      name,
-      days,
+      mealCount,
+      days: packageDays,
       price,
+      subscription,
     });
 
     if (!package) {

@@ -126,3 +126,20 @@ module.exports.getOrder = async (req, res) => {
     return res.status(500).json({ errors: error });
   }
 };
+
+/**
+ * @description Complete Order
+ * @route DELTE /api/order/complete-order
+ * @access Private
+ */
+module.exports.completeOrder = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await orderModel.deleteOne({ _id: ObjectId(id) });
+
+    return res.status(200).json({ status: true });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
+};

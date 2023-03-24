@@ -11,6 +11,6 @@ const verifyIsPaid = require("../middlewares/verifyIsPaid");
 //routes
 router.route("/add-meal").post(verifyAdmin, addMeal);
 router.route("/get-meals").get(verifyUser, verifyIsPaid, getMeals);
-router.route("/paid").get(verifyUser, verifyIsPaid);
+// router.route("/paid").get(verifyUser, verifyIsPaid);
 
 module.exports = router;
