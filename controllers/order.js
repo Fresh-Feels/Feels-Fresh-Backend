@@ -3,6 +3,7 @@ const orderModel = require("../models/Order");
 const userModel = require("../models/User");
 const menuModel = require("../models/Menu");
 const subscriptionModel = require("../models/Subscription");
+const mealModel = require("../models/Meal");
 
 //Helpers
 const {
@@ -134,17 +135,28 @@ module.exports.getOrder = async (req, res) => {
  */
 module.exports.getUserOrders = async (req, res) => {
   const { _id } = req.user;
+  const mealIds = [];
 
   try {
+    //Get User Orders
     const orders = await orderModel.find({ user: _id });
     if (orders.length === 0) {
       return res
         .status(404)
         .json({ errors: [{ msg: "Orders not found", status: false }] });
     }
+
+    //Get Meal Ids
+    orders.forEach((e) => {
+      mealIds.push(e.meal);
+    });
+
+    //Get Meals
+    const meals = await mealModel.find({ _id: { $in: mealIds } });
+
     //Response
     return res.status(200).json({
-      orders,
+      meals,
       status: true,
     });
   } catch (error) {
