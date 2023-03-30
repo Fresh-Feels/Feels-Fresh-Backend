@@ -2,7 +2,6 @@ const subscriptionModel = require("../models/Subscription");
 
 module.exports = async (req, res, next) => {
   const { _id } = req.user;
-  console.log(_id);
 
   try {
     const isPaid = await subscriptionModel.findOne({ user: _id });
@@ -10,6 +9,7 @@ module.exports = async (req, res, next) => {
     let currentDate = new Date().getDate();
 
     if (currentDate - subscriptionDate === isPaid.days) {
+      await subscriptionModel.updateOne({ user: _id }, { isPaid: false });
       return res.status(401).send("Your Subscription is Expired");
     } else {
       next();

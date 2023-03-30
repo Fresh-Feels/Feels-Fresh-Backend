@@ -111,10 +111,13 @@ module.exports.payment = async (req, res) => {
       resAPI.on("data", (chunk) => {
         response += chunk;
       });
-      resAPI.on("end", () => {
+      resAPI.on("end", async () => {
         const result = JSON.parse(response);
         console.log(result);
         if (result.gateway_response) {
+          //Update user payment system
+          await subscriptionModel.updateOne({ user: _id }, { isPaid: true });
+          
           // Redirect to gateway_response URL
           res
             .status(200)
@@ -151,4 +154,28 @@ module.exports.paymentSuccess = async (req, res) => {
  */
 module.exports.paymentFailed = async (req, res) => {
   res.send("Payment failed");
+};
+
+/**
+ * @description Get User Subscription
+ * @route GET /api/subscription/get-user-subscription
+ * @access Private
+ */
+module.exports.getUserSubscription = async (req, res) => {
+  const { _id } = req.user;
+
+  try {
+    const subscription = await subscriptionModel.findOne({ user: _id });
+    if (!subscription) {
+      return res.status(400).json({ status: true, msg: "No Subscription" });
+    }
+
+    //Response
+    return res.status(200).json({
+      status: true,
+      subscription,
+    });
+  } catch (error) {
+    return res.status(500).json({ errors: error });
+  }
 };

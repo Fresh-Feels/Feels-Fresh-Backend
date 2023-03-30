@@ -19,6 +19,10 @@ const subscriptionSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

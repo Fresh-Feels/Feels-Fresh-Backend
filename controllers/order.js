@@ -79,13 +79,25 @@ module.exports.addOrder = async (req, res) => {
  * @access Private
  */
 module.exports.getAllOrders = async (req, res) => {
+  let isPaidIds = [];
   try {
-    const orders = await orderModel.find({}).populate("user orderItems");
+    //Getting all is paid subscriptions
+    const subscriptions = await subscriptionModel.find({ isPaid: true });
+
+    //Extracting user ids
+    subscriptions.forEach((e) => {
+      isPaidIds.push(e.user);
+    });
+
+    const orders = await orderModel
+      .find({ user: { $in: isPaidIds } })
+      .populate("user orderItems");
     if (orders.length === 0) {
       return res
         .status(404)
         .json({ errors: [{ msg: "Orders not found", status: false }] });
     }
+
     //Response
     return res.status(200).json({
       orders,
@@ -171,15 +183,16 @@ module.exports.getUserOrders = async (req, res) => {
  */
 module.exports.removeUserOrder = async (req, res) => {
   const { id } = req.params;
+  const { _id } = req.user;
 
   try {
-    const isExist = await orderModel.findOne({ _id: ObjectId(id) });
+    const isExist = await orderModel.findOne({ meal: ObjectId(id) });
     if (!isExist) {
       return res
         .status(401)
         .json({ status: false, msg: "Order doesnot exist" });
     }
-    await orderModel.deleteOne({ _id: ObjectId(id) });
+    await orderModel.deleteOne({ user: _id, meal: ObjectId(id) });
 
     return res.status(200).json({ status: true, msg: "Order Removed" });
   } catch (error) {
