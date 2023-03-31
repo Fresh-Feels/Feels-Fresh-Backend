@@ -88,10 +88,8 @@ module.exports.getAllOrders = async (req, res) => {
     subscriptions.forEach((e) => {
       isPaidIds.push(e.user);
     });
-
-    const orders = await orderModel
-      .find({ user: { $in: isPaidIds } })
-      .populate("user orderItems");
+    // user: { $in: isPaidIds }
+    const orders = await orderModel.find({}).populate("user orderItems");
     if (orders.length === 0) {
       return res
         .status(404)

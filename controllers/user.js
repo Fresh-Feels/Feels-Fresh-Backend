@@ -1,5 +1,6 @@
 //Models
 const userModel = require("../models/User");
+const subscriptionModel = require("../models/Subscription");
 
 //Utility Functions
 const generateToken = require("../utils/generateToken");
@@ -354,7 +355,9 @@ module.exports.userInfo = async (req, res) => {
         errors: [{ msg: "User not found", status: false }],
       });
     }
-    return res.status(200).json({ user, status: true });
+    const { isPaid } = await subscriptionModel.findOne({ user: _id });
+    
+    return res.status(200).json({ user, isPaid, status: true });
   } catch (error) {
     return res.status(500).json({ errors: error });
   }
