@@ -1,5 +1,5 @@
 {
-  "name": "Fresh-Feels-Backend",
+  "name": "fresh-feels-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -23,7 +23,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.3",
     "nodemailer": "^6.9.0",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.22",
     "path": "^0.12.7"
   }
 }

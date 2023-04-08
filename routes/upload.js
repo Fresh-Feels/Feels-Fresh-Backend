@@ -10,7 +10,6 @@ cloudinary.config({
 router.route("/image").post(async (req, res) => {
   const { type } = req.body;
   const filetypes = /jpg|jpeg|png/;
-  console.log(type);
 
   if (!type.toLowerCase().toString().match(filetypes)) {
     console.log("Images Only");

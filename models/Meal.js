@@ -13,10 +13,6 @@ const mealSchema = new mongoose.Schema(
     calories: {
       type: Number,
     },
-    price: {
-      type: Number,
-      required: true,
-    },
   },
   {
     timestamps: true,

@@ -8,7 +8,7 @@ const userGoalsModel = require("../models/UserGoals");
  * @access Public
  */
 module.exports.addMeal = async (req, res) => {
-  const { image, name, price } = req.body;
+  const { image, name } = req.body;
 
   //Edge cases and errors
   if (image === "") {
@@ -21,18 +21,12 @@ module.exports.addMeal = async (req, res) => {
       .status(400)
       .json({ errors: [{ msg: "Name is required", status: false }] });
   }
-  if (price <= 0) {
-    return res
-      .status(400)
-      .json({ errors: [{ msg: "Price is required", status: false }] });
-  }
 
   //Logic
   try {
     const meal = await mealModel.create({
       image,
       name,
-      price,
     });
 
     return res.status(200).json({
@@ -76,4 +70,3 @@ module.exports.getMeals = async (req, res) => {
     return res.status(500).json({ errors: error });
   }
 };
-

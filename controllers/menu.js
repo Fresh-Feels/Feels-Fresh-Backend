@@ -117,3 +117,53 @@ module.exports.getMenu = async (req, res) => {
     return res.status(500).json({ errors: error });
   }
 };
+
+
+/**
+ * @description Get menu for admin
+ * @route GET /api/menu/get-menu-admin
+ * @access Public
+ */
+module.exports.getMenuAdmin = async (req, res) => {
+  const { id } = req.params;
+  let protein = 0;
+  let fat = 0;
+  let fiber = 0;
+  let carb = 0;
+  let totalCalories = 0;
+  let isOrdered = false;
+
+  try {
+    //Get Menu
+    const menu = await menuModel
+      .find({ meal: { $eq: ObjectId(id) } })
+      .populate("meal menu");
+
+    if (menu.length === 0) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "No menu found", status: false }] });
+    }
+
+    //Add total calories to meal
+    menu[0].menu.forEach((e) => {
+      protein += e.nutrients[0].protein;
+      carb += e.nutrients[0].carb;
+      fat += e.nutrients[0].fat;
+      fiber += e.nutrients[0].fiber;
+    });
+
+    totalCalories = protein + fiber + fat + carb;
+
+    //Response
+    return res.status(200).json({
+      menu,
+      totalCalories,
+      nutrients: [{ protein, fat, fiber, carb }],
+      status: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ errors: error });
+  }
+};
