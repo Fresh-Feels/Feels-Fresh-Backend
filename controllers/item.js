@@ -17,7 +17,6 @@ module.exports.addItem = async (req, res) => {
   let protein = 0;
   let carb = 0;
   let fat = 0;
-  let fiber = 0;
 
   // Add Item Logic
   try {
@@ -33,11 +32,10 @@ module.exports.addItem = async (req, res) => {
       protein += Number(e.nutrients[0].protein);
       carb += Number(e.nutrients[0].carb);
       fat += Number(e.nutrients[0].fat);
-      fiber += Number(e.nutrients[0].fiber);
     });
 
     //pushing them into nurtients
-    item.nutrients.push({ protein, carb, fat, fiber });
+    item.nutrients.push({ protein, carb, fat });
 
     await item.save();
 

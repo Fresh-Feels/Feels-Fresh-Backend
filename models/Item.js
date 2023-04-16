@@ -38,9 +38,6 @@ const itemSchema = new mongoose.Schema(
         fat: {
           type: Number,
         },
-        fiber: {
-          type: Number,
-        },
       },
     ],
     directions: {
@@ -50,10 +47,6 @@ const itemSchema = new mongoose.Schema(
     ingredients: [
       {
         ingredientName: {
-          type: String,
-          required: true,
-        },
-        ingredientDescription: {
           type: String,
           required: true,
         },
@@ -70,9 +63,6 @@ const itemSchema = new mongoose.Schema(
               type: Number,
             },
             fat: {
-              type: Number,
-            },
-            fiber: {
               type: Number,
             },
           },

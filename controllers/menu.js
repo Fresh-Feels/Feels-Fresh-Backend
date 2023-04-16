@@ -15,10 +15,6 @@ const {
  */
 module.exports.addMenu = async (req, res) => {
   const { menu, meal } = req.body;
-  let protein = 0;
-  let fat = 0;
-  let fiber = 0;
-  let carb = 0;
   let totalCalories = 0;
 
   //Add menu logic
@@ -37,13 +33,9 @@ module.exports.addMenu = async (req, res) => {
 
     //Add total calories to meal
     menuItems[0].menu.forEach((e) => {
-      protein += Number(e.nutrients[0].protein);
-      carb += Number(e.nutrients[0].carb);
-      fat += Number(e.nutrients[0].fat);
-      fiber += Number(e.nutrients[0].fiber);
+      totalCalories += Number(e.calories);
     });
 
-    totalCalories = protein + fiber + fat + carb;
     await mealModel.updateOne(
       { _id: { $eq: ObjectId(meal) } },
       { calories: totalCalories }
@@ -71,7 +63,6 @@ module.exports.getMenu = async (req, res) => {
   const { _id } = req.user;
   let protein = 0;
   let fat = 0;
-  let fiber = 0;
   let carb = 0;
   let totalCalories = 0;
   let isOrdered = false;
@@ -99,16 +90,15 @@ module.exports.getMenu = async (req, res) => {
       protein += e.nutrients[0].protein;
       carb += e.nutrients[0].carb;
       fat += e.nutrients[0].fat;
-      fiber += e.nutrients[0].fiber;
     });
 
-    totalCalories = protein + fiber + fat + carb;
+    totalCalories = protein + fat + carb;
 
     //Response
     return res.status(200).json({
       menu,
       totalCalories,
-      nutrients: [{ protein, fat, fiber, carb }],
+      nutrients: [{ protein, fat, carb }],
       isOrdered,
       status: true,
     });
@@ -117,7 +107,6 @@ module.exports.getMenu = async (req, res) => {
     return res.status(500).json({ errors: error });
   }
 };
-
 
 /**
  * @description Get menu for admin
@@ -128,11 +117,9 @@ module.exports.getMenuAdmin = async (req, res) => {
   const { id } = req.params;
   let protein = 0;
   let fat = 0;
-  let fiber = 0;
   let carb = 0;
   let totalCalories = 0;
-  let isOrdered = false;
-
+  
   try {
     //Get Menu
     const menu = await menuModel
@@ -150,16 +137,15 @@ module.exports.getMenuAdmin = async (req, res) => {
       protein += e.nutrients[0].protein;
       carb += e.nutrients[0].carb;
       fat += e.nutrients[0].fat;
-      fiber += e.nutrients[0].fiber;
     });
 
-    totalCalories = protein + fiber + fat + carb;
+    totalCalories = protein + fat + carb;
 
     //Response
     return res.status(200).json({
       menu,
       totalCalories,
-      nutrients: [{ protein, fat, fiber, carb }],
+      nutrients: [{ protein, fat, carb }],
       status: true,
     });
   } catch (error) {
