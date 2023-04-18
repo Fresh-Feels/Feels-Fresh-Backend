@@ -50,7 +50,7 @@ module.exports.getFavorites = async (req, res) => {
 
   try {
     const favorites = await favoriteModel.find({ user: _id }).populate('item');
-    if (!favorites) {
+    if (favorites.length === 0) {
       return res
         .status(404)
         .json({ errors: [{ msg: "Favorite not found", status: false }] });

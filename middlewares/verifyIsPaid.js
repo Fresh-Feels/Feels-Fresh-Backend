@@ -8,11 +8,20 @@ module.exports = async (req, res, next) => {
     let subscriptionDate = isPaid.updatedAt.getDate();
     let currentDate = new Date().getDate();
 
-    if (currentDate - subscriptionDate === isPaid.days) {
-      await subscriptionModel.updateOne({ user: _id }, { isPaid: false });
-      return res.status(401).send("Your Subscription is Expired");
+    if (isPaid.days > 8) {
+      if (currentDate - subscriptionDate === 30) {
+        await subscriptionModel.updateOne({ user: _id }, { isPaid: false });
+        return res.status(401).send("Your Subscription is Expired");
+      } else {
+        next();
+      }
     } else {
-      next();
+      if (currentDate - subscriptionDate === isPaid.days) {
+        await subscriptionModel.updateOne({ user: _id }, { isPaid: false });
+        return res.status(401).send("Your Subscription is Expired");
+      } else {
+        next();
+      }
     }
   } catch (error) {
     console.log(error);

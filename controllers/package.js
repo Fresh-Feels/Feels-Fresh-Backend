@@ -16,7 +16,7 @@ module.exports.addPackage = async (req, res) => {
   let packageDays = 0;
 
   if (subscription === "Monthly") {
-    packageDays = 30;
+    packageDays = days * 4;
   } else {
     packageDays = days;
   }
